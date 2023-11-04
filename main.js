@@ -1,18 +1,8 @@
 let camera = new Vec2(0, 0);
-let drone = {
-    position: new Vec2(0,0),
-    velocity: new Vec2(0,0),
-    angle: 0,
-    vertex: [
-        new Vec2(0 - 50, 0 - 15),
-        new Vec2(0 + 50, 0 - 15),
-        new Vec2(0 - 50, 0 + 15),
-        new Vec2(0 + 50, 0 + 15)
-    ]
-};
+let drone = new Drone();
 
 let ground = {
-    position: new Vec2(-1920, 1080),
+    position: new Vec2(-1920, 400),
     size: new Vec2(1920 * 2, 50)
 }
 
