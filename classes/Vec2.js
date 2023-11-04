@@ -25,7 +25,7 @@ class Vec2{
         return new Vec2(a.x * b, a.y * b);
     }
     static angleToVector(a){
-        const vector = new Vec2(Math.cos((a - 90) * Math.PI / 180), Math.sin((a - 90) * Math.PI / 180));
+        const vector = new Vec2(-Math.cos((a - 90) * Math.PI / 180), Math.sin((a - 90) * Math.PI / 180));
         vector.normalize()
         return vector;
     }
