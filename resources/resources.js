@@ -1,0 +1,1 @@
+const srcDrone = document.getElementById("srcDrone"); 

@@ -3,7 +3,7 @@ let drone = new Drone();
 
 let ground = {
     position: new Vec2(-1920, 400),
-    size: new Vec2(1920 * 2, 50)
+    size: new Vec2(1920 * 2, 60)
 }
 
 

@@ -5,10 +5,10 @@ class Drone{
         this.angle = 45;
         this.angleVelocity = 0;
         this.vertex = [
-            new Vec2(0 - 50, 0 - 15),
-            new Vec2(0 + 50, 0 - 15),
-            new Vec2(0 - 50, 0 + 15),
-            new Vec2(0 + 50, 0 + 15)
+            new Vec2(0 - 60, 0 - 15),
+            new Vec2(0 + 60, 0 - 15),
+            new Vec2(0 - 60, 0 + 15),
+            new Vec2(0 + 60, 0 + 15)
         ];
     }
 
@@ -66,16 +66,16 @@ class Drone{
     }
 
     updateVertex() {
-        this.vertex[0].x = this.position.x - Math.cos(this.angle * Math.PI / 180) * 50 - Math.sin(this.angle * Math.PI / 180) * 15;
-        this.vertex[0].y = this.position.y - Math.cos(this.angle * Math.PI / 180) * 15 + Math.sin(this.angle * Math.PI / 180) * 50;
+        this.vertex[0].x = this.position.x - Math.cos(this.angle * Math.PI / 180) * 60 - Math.sin(this.angle * Math.PI / 180) * 15;
+        this.vertex[0].y = this.position.y - Math.cos(this.angle * Math.PI / 180) * 15 + Math.sin(this.angle * Math.PI / 180) * 60;
     
-        this.vertex[1].x = this.position.x + Math.cos(this.angle * Math.PI / 180) * 50 - Math.sin(this.angle * Math.PI / 180) * 15;
-        this.vertex[1].y = this.position.y - Math.cos(this.angle * Math.PI / 180) * 15 - Math.sin(this.angle * Math.PI / 180) * 50;
+        this.vertex[1].x = this.position.x + Math.cos(this.angle * Math.PI / 180) * 60 - Math.sin(this.angle * Math.PI / 180) * 15;
+        this.vertex[1].y = this.position.y - Math.cos(this.angle * Math.PI / 180) * 15 - Math.sin(this.angle * Math.PI / 180) * 60;
     
-        this.vertex[2].x = this.position.x - Math.cos(this.angle * Math.PI / 180) * 50 + Math.sin(this.angle * Math.PI / 180) * 15;
-        this.vertex[2].y = this.position.y + Math.cos(this.angle * Math.PI / 180) * 15 + Math.sin(this.angle * Math.PI / 180) * 50;
+        this.vertex[2].x = this.position.x - Math.cos(this.angle * Math.PI / 180) * 60 + Math.sin(this.angle * Math.PI / 180) * 15;
+        this.vertex[2].y = this.position.y + Math.cos(this.angle * Math.PI / 180) * 15 + Math.sin(this.angle * Math.PI / 180) * 60;
     
-        this.vertex[3].x = this.position.x + Math.cos(this.angle * Math.PI / 180) * 50 + Math.sin(this.angle * Math.PI / 180) * 15;
-        this.vertex[3].y = this.position.y + Math.cos(this.angle * Math.PI / 180) * 15 - Math.sin(this.angle * Math.PI / 180) * 50;
+        this.vertex[3].x = this.position.x + Math.cos(this.angle * Math.PI / 180) * 60 + Math.sin(this.angle * Math.PI / 180) * 15;
+        this.vertex[3].y = this.position.y + Math.cos(this.angle * Math.PI / 180) * 15 - Math.sin(this.angle * Math.PI / 180) * 60;
     }
 }
