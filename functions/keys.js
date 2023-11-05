@@ -5,7 +5,6 @@ let rightDown = false;
 window.addEventListener("keydown", (event) => {
     if(event.key == "ArrowLeft"){
         leftDown = true;
-        console.log("xd")
     }
     else if(event.key == "ArrowRight"){
         rightDown = true;

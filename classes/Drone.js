@@ -1,8 +1,8 @@
 class Drone{
     constructor(){
-        this.position = new Vec2(0,0);
+        this.position = new Vec2(2500,-200);
         this.velocity = new Vec2(0,0);
-        this.angle = 45;
+        this.angle = 0;
         this.angleVelocity = 0;
         this.vertex = [
             new Vec2(0 - 60, 0 - 15),
@@ -33,7 +33,6 @@ class Drone{
         
         this.angleVelocity *= 0.9;
         this.angle += this.angleVelocity;
-        this.angle *= 0.99;
         
         if(this.angle >= 180){
             this.angle -= 360;
@@ -47,32 +46,76 @@ class Drone{
         this.position = Vec2.add(this.position, this.velocity);
 
         this.updateVertex();
-    
-        for(let i = 0; i<4; i++){
-            if(
-                this.vertex[i].x > ground.position.x && 
-                this.vertex[i].x < ground.position.x + ground.size.x &&
-                this.vertex[i].y > ground.position.y && 
-                this.vertex[i].y < ground.position.y + ground.size.y
-            ){
-                this.velocity.y = 0;
+        for (let i = Math.floor((drone.position.y - world.tileSize) / world.tileSize); i < Math.floor((drone.position.y + world.tileSize * 2) / world.tileSize); i++) {
+            for (let j = Math.floor((drone.position.x - world.tileSize) / world.tileSize); j < Math.floor((drone.position.x + world.tileSize * 2) / world.tileSize); j++) {
                 
-                if(Math.abs(ground.position.y - this.vertex[i].y) < Math.abs((ground.position.y + ground.size.y) - this.vertex[i].y)){
-                    this.velocity.y -= Math.abs(ground.position.y - this.vertex[i].y)
-                }
-                else{
-                    this.velocity.y += Math.abs((ground.position.y + ground.size.y) - this.vertex[i].y);
-                }
-                
-                // this.velocity.y -= Math.min(Math.abs(ground.position.y - this.vertex[i].y), Math.abs((ground.position.y + ground.size.y) - this.vertex[i].y));
-                this.velocity.x /= 1.1;
+                if(world.worldMatrix[j * world.matrixHeight + i] != undefined && world.worldMatrix[j * world.matrixHeight + i].type == 0){
+                    
+                    let objectPosition = world.worldMatrix[j * world.matrixHeight + i].worldPosition;
+                    let objectSize = world.tileSize;
 
-                if(i == 2){
-                    this.angleVelocity -= 0.5;
+                    for(let k = 0; k<4; k++){
+                        if(
+                            this.vertex[k].x > objectPosition.x && 
+                            this.vertex[k].x < objectPosition.x + objectSize &&
+                            this.vertex[k].y > objectPosition.y && 
+                            this.vertex[k].y < objectPosition.y + objectSize
+                        ){
+                            world.worldMatrix[j * world.matrixHeight + i].renderSelected();
+                            // // this.velocity.y = 0;
+
+                            let options = [
+                                Math.abs(objectPosition.y - this.vertex[k].y),
+                                Math.abs((objectPosition.y + objectSize) - this.vertex[k].y),
+                                Math.abs(objectPosition.x - this.vertex[k].x),
+                                Math.abs((objectPosition.x + objectSize) - this.vertex[k].x)
+                            ]
+
+                            let smaller = 100000;
+                            let smallerValue = 100000;
+
+                            for(let s = 0; s<4; s++){
+                                if(options[s] < smallerValue){
+                                    smallerValue = options[s];
+                                    smaller = s;
+                                }
+                            }
+
+                            let movement = new Vec2(0,0);
+                            let velocity = new Vec2(0,0);
+
+                            if(smaller == 0){
+                                movement.y = objectPosition.y - this.vertex[k].y;
+                                velocity.x = this.velocity.x * 0.9; 
+                                velocity.y = this.velocity.y * -0.6;
+                            }
+                            else if(smaller == 1){
+                                movement.y = (objectPosition.y + objectSize) - this.vertex[k].y;
+                                velocity.x = this.velocity.x * 0.9;
+                                velocity.y = this.velocity.y * -0.6;
+                            }
+                            else if(smaller == 2){
+                                movement.x = objectPosition.x - this.vertex[k].x;
+                                velocity.x = this.velocity.x * -0.6; 
+                                velocity.y = this.velocity.y * 0.9; 
+                            }
+                            else if(smaller == 3){
+                                movement.x = (objectPosition.x + objectSize) - this.vertex[k].x;
+                                velocity.x = this.velocity.x * -0.6; 
+                                velocity.y = this.velocity.y * 0.9; 
+                            }
+
+                            this.velocity = velocity;
+                            this.position = Vec2.add(this.position, movement);
+                            this.angle *= 0.99;
+                            break;
+
+                        }
+
+                    }
+    
                 }
-                if(i == 3){
-                    this.angleVelocity += 0.5;
-                }
+            
             }
         }
     }

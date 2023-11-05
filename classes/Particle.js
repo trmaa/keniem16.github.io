@@ -61,17 +61,71 @@ class Particle{
         this.size *= 0.99;
         this.alpha -= 0.01;
 
-        if(
-            this.position.x > ground.position.x && 
-            this.position.x < ground.position.x + ground.size.x &&
-            this.position.y > ground.position.y && 
-            this.position.y < ground.position.y + ground.size.y
-        ){
-            if(Math.abs(ground.position.y - this.position.y) < Math.abs((ground.position.y + ground.size.y) - this.position.y)){
-                this.position.y -= Math.abs(ground.position.y - this.position.y)
-            }
-            else{
-                this.position.y += Math.abs((ground.position.y + ground.size.y) - this.position.y);
+        for (let i = Math.floor((this.position.y - world.tileSize) / world.tileSize); i < Math.floor((this.position.y + world.tileSize * 2) / world.tileSize); i++) {
+            for (let j = Math.floor((this.position.x - world.tileSize) / world.tileSize); j < Math.floor((this.position.x + world.tileSize * 2) / world.tileSize); j++) {
+                
+                if(world.worldMatrix[j * world.matrixHeight + i] != undefined && world.worldMatrix[j * world.matrixHeight + i].type == 0){
+                    
+                    let objectPosition = world.worldMatrix[j * world.matrixHeight + i].worldPosition;
+                    let objectSize = world.tileSize;
+                    if(
+                        this.position.x > objectPosition.x && 
+                        this.position.x < objectPosition.x + objectSize &&
+                        this.position.y > objectPosition.y && 
+                        this.position.y < objectPosition.y + objectSize
+                    ){
+                        world.worldMatrix[j * world.matrixHeight + i].renderSelected();
+                        // // this.velocity.y = 0;
+
+                        let options = [
+                            Math.abs(objectPosition.y - this.position.y),
+                            Math.abs((objectPosition.y + objectSize) - this.position.y),
+                            Math.abs(objectPosition.x - this.position.x),
+                            Math.abs((objectPosition.x + objectSize) - this.position.x)
+                        ]
+
+                        let smaller = 100000;
+                        let smallerValue = 100000;
+
+                        for(let s = 0; s<4; s++){
+                            if(options[s] < smallerValue){
+                                smallerValue = options[s];
+                                smaller = s;
+                            }
+                        }
+
+                        let movement = new Vec2(0,0);
+                        let velocity = new Vec2(0,0);
+
+                        if(smaller == 0){
+                            movement.y = objectPosition.y - this.position.y;
+                            velocity.x = this.velocity.x * 0.9; 
+                            // velocity.y = this.velocity.y * -0.6;
+                        }
+                        else if(smaller == 1){
+                            movement.y = (objectPosition.y + objectSize) - this.position.y;
+                            velocity.x = this.velocity.x * 0.9;
+                            // velocity.y = this.velocity.y * -0.6;
+                        }
+                        else if(smaller == 2){
+                            movement.x = objectPosition.x - this.position.x;
+                            // velocity.x = this.velocity.x * -0.6; 
+                            velocity.y = this.velocity.y * 0.9; 
+                        }
+                        else if(smaller == 3){
+                            movement.x = (objectPosition.x + objectSize) - this.position.x;
+                            // velocity.x = this.velocity.x * -0.6; 
+                            velocity.y = this.velocity.y * 0.9; 
+                        }
+
+                        this.velocity = velocity;
+                        this.position = Vec2.add(this.position, movement);
+                        this.angle *= 0.99;
+                        break;
+                    }
+    
+                }
+            
             }
         }
     }

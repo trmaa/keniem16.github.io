@@ -5,14 +5,26 @@ function render(dt){
     ctx.fillStyle = `rgb(200,210,255)`;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+    // DRAW GROUND
+
+
+
+    world.render();
+    
     // DRAW DRONE
+
+    // for (let i = Math.floor((drone.position.y - world.tileSize) / world.tileSize); i < Math.floor((drone.position.y + world.tileSize * 2) / world.tileSize); i++) {
+    //     for (let j = Math.floor((drone.position.x - world.tileSize) / world.tileSize); j < Math.floor((drone.position.x + world.tileSize * 2) / world.tileSize); j++) {
+    //         world.worldMatrix[j * world.matrixHeight + i].renderSelected();
+    //     }
+    // }
+
 
     drone.render();
 
-    // DRAW GROUND
+    // world.worldMatrix[Math.floor(drone.position.x / world.tileSize) * world.matrixHeight + Math.floor(drone.position.y / world.tileSize)].renderSelected();
 
-    ctx.fillStyle = `rgb(60,60,60)`;
-    ctx.fillRect(worldToScreenX(ground.position.x), worldToScreenY(ground.position.y), ground.size.x, ground.size.y);
+
 
     for(let i = 0; i<particles.length; i++){
         particles[i].render();

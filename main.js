@@ -1,10 +1,7 @@
 let camera = new Vec2(0, 0);
 let drone = new Drone();
 
-let ground = {
-    position: new Vec2(-1920, 400),
-    size: new Vec2(1920 * 2, 60)
-}
+let world = new World(1000, 1000, 200);
 
 
 let lastUpdate = Date.now();
