@@ -39,7 +39,7 @@ function spawnParticle(position, velocity, angle, variation){
 class Particle{
     constructor(position, velocity){
         this.position = position;
-        this.size = Math.random() * 30 + 5;
+        this.size = Math.random() * 15 + 5;
         this.angle = Math.random() * 360;
         this.alpha = Math.random();
 
@@ -58,7 +58,7 @@ class Particle{
     update(){
         this.velocity.y += 0.1;
         this.position = Vec2.add(this.position, this.velocity);
-        this.size *= 0.99;
+        this.size *= 1.02;
         this.alpha -= 0.01;
 
         for (let i = Math.floor((this.position.y - world.tileSize) / world.tileSize); i < Math.floor((this.position.y + world.tileSize * 2) / world.tileSize); i++) {

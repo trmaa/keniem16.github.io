@@ -1,7 +1,7 @@
 let camera = new Vec2(0, 0);
 let drone = new Drone();
 
-let world = new World(1000, 1000, 200);
+let world = new World(100000, 2, 120);
 
 
 let lastUpdate = Date.now();
