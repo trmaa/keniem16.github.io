@@ -3,7 +3,15 @@ class Tile{
         this.tileSize = tileSize;
         this.matrixPosition = position;
         this.worldPosition = Vec2.mult(position, tileSize);
-        this.type = Math.floor(Math.random()*2);
+        
+        this.type = Math.floor(Math.random() * 2)
+        
+        // if(map[position.x][position.y] != undefined && map[position.x][position.y] == "A"){
+        //     this.type == 0;
+        // }
+        // else{
+        //     this.type == 1;
+        // }
     }
 
     render(){

@@ -1,10 +1,10 @@
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-A    A       A	A               A
+A    A       A  A               A
 A    A       AAAA               A
 AAA  A       A  A               A
 AAA          A  A               A
 A            AAAA               A
-A      X  A  A	A               A
+A      X  A  A  A               A
 AAAAAAAAAAA  A  A               A
  A  A  A  A  AAAA               A
  A  A  A  A  AAA                A
@@ -14,4 +14,4 @@ AAAAAAAAAAA  AA      A          A
 AAAAAAAAAAA       AAAA          A
  A  A  A  A      AAAAA          A
  A  A  A  A     AAAAAA          A
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
