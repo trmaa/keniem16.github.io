@@ -1,9 +1,10 @@
 
 let map = [];
 
-let nLines = 1;
+let nChar = 1;
 let currentLine = 0;
 let currentChar = 0;
+let mapLoaded = false;
 
 fetch("../maps/01.txt")
     .then(function (res) {
@@ -11,11 +12,12 @@ fetch("../maps/01.txt")
     })
     .then(function (data) {
         for(let i = 0; i<data.length; i++){
+            nChar ++;
             if(data[i] == "\n"){
-                nLines ++;
+                break;
             }
         }
-        for(let i = 0; i<nLines; i++){
+        for(let i = 0; i<nChar; i++){
             map[i] = [];
         }
         for(let i = 0; i<data.length; i++){
@@ -27,9 +29,9 @@ fetch("../maps/01.txt")
             if(data[i] == "\r"){
                 continue;
             }
-            map[currentLine][currentChar] = data[i];
+            map[currentChar][currentLine] = data[i];
             currentChar ++;
-
         }
+        mapLoaded = true;
 });
 

@@ -6,24 +6,13 @@
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <canvas id="canvas" width="1920" height="1080"></canvas>
-
-    <img src="resources/src_drone.png" class="noDisplay" id="srcDrone">
-    <img src="resources/src_fire_1.png" class="noDisplay" id="srcFire_1">
-    <img src="resources/src_fire_2.png" class="noDisplay" id="srcFire_2">
-
+<body oncontextmenu="return false;">
+    <div id="menuContainer">
+        <img src="resources/menuImage.png" id="menuImage" draggable="false" alt="">
+        <button id="playButton">PLAY</button>
+    </div>
 </body>
-    <script src="functions/keys.js"></script>
-    <script src="classes/Vec2.js"></script>
-    <script src="functions/map.js"></script>
-    <script src="classes/Tile.js"></script>
-    <script src="classes/World.js"></script>
-    <script src="classes/Drone.js"></script>
-    <script src="classes/Particle.js"></script>
-    <script src="functions/utils.js"></script>
-    <script src="functions/update.js"></script>
-    <script src="resources/resources.js"></script>
-    <script src="functions/render.js"></script>
-    <script src="main.js"></script>
+
+<script src="menu.js"></script>
+
 </html>

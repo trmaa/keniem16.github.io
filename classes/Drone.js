@@ -1,6 +1,6 @@
 class Drone{
     constructor(){
-        this.position = new Vec2(2500,-200);
+        this.position = new Vec2(1150,1945);
         this.velocity = new Vec2(0,0);
         this.angle = 0;
         this.angleVelocity = 0;
@@ -10,6 +10,9 @@ class Drone{
             new Vec2(0 - 60, 0 + 15),
             new Vec2(0 + 60, 0 + 15)
         ];
+        this.health = 100;
+        this.colliding = false;
+        this.timeSinceCollision = 0;
     }
 
     update(){
@@ -45,7 +48,10 @@ class Drone{
         this.velocity = Vec2.mult(this.velocity, 0.999);
         this.position = Vec2.add(this.position, this.velocity);
 
+        let hasCollided = false;
+
         this.updateVertex();
+        cells:
         for (let i = Math.floor((drone.position.y - world.tileSize) / world.tileSize); i < Math.floor((drone.position.y + world.tileSize * 2) / world.tileSize); i++) {
             for (let j = Math.floor((drone.position.x - world.tileSize) / world.tileSize); j < Math.floor((drone.position.x + world.tileSize * 2) / world.tileSize); j++) {
                 
@@ -53,7 +59,7 @@ class Drone{
                     
                     let objectPosition = world.worldMatrix[j * world.matrixHeight + i].worldPosition;
                     let objectSize = world.tileSize;
-
+                    vertex:
                     for(let k = 0; k<4; k++){
                         if(
                             this.vertex[k].x > objectPosition.x && 
@@ -63,7 +69,8 @@ class Drone{
                         ){
                             world.worldMatrix[j * world.matrixHeight + i].renderSelected();
                             // // this.velocity.y = 0;
-
+                            hasCollided = true;
+                            this.colliding = true;
                             let options = [
                                 Math.abs(objectPosition.y - this.vertex[k].y),
                                 Math.abs((objectPosition.y + objectSize) - this.vertex[k].y),
@@ -108,8 +115,11 @@ class Drone{
                             this.velocity = velocity;
                             this.position = Vec2.add(this.position, movement);
                             this.angle *= 0.99;
-                            break;
+                            break cells;
 
+                        }
+                        else if(!hasCollided){
+                            this.colliding = false;
                         }
 
                     }
@@ -118,6 +128,13 @@ class Drone{
             
             }
         }
+
+        if(this.colliding & this.timeSinceCollision < 0){
+            this.health -= 2 * this.velocity.m;
+            this.timeSinceCollision = 25;
+        }
+
+        this.timeSinceCollision -= 1;
     }
 
     updateVertex() {
