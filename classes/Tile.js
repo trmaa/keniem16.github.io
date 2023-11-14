@@ -42,7 +42,23 @@ class Tile{
     }
 
     renderSelected(){
-        ctx.fillStyle = `rgb(255, 0, 0)`;
-        ctx.fillRect(worldToScreenX(this.worldPosition.x), worldToScreenY(this.worldPosition.y), this.tileSize, this.tileSize)
+        ctx.fillStyle = `rgba(255, 0, 0, 0.1)`;
+        ctx.fillRect(worldToScreenX(this.worldPosition.x), worldToScreenY(this.worldPosition.y), this.tileSize, this.tileSize);
+        ctx.fillStyle = `rgba(0, 0, 255, 1)`;
+        if(this.type == 0){
+            if(world.worldMatrix[(this.matrixPosition.x - 1) * world.matrixHeight + this.matrixPosition.y].type == 1){
+                ctx.fillRect(worldToScreenX(this.worldPosition.x), worldToScreenY(this.worldPosition.y), 6, this.tileSize);
+            }
+            if(world.worldMatrix[(this.matrixPosition.x + 1) * world.matrixHeight + this.matrixPosition.y].type == 1){
+                ctx.fillRect(worldToScreenX(this.worldPosition.x + this.tileSize - 6), worldToScreenY(this.worldPosition.y), 6, this.tileSize);
+            }
+            if(world.worldMatrix[this.matrixPosition.x * world.matrixHeight + (this.matrixPosition.y - 1)].type == 1){
+                ctx.fillRect(worldToScreenX(this.worldPosition.x), worldToScreenY(this.worldPosition.y), this.tileSize, 6);
+            }
+            if(world.worldMatrix[this.matrixPosition.x * world.matrixHeight + (this.matrixPosition.y + 1)].type == 1){
+                ctx.fillRect(worldToScreenX(this.worldPosition.x), worldToScreenY(this.worldPosition.y + this.tileSize - 6), this.tileSize, 6);
+            }
+        }
+
     }
 }
