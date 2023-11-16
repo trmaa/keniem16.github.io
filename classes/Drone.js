@@ -265,12 +265,12 @@ class Drone{
         ctx.rotate(this.angle * Math.PI / 180);
         ctx.translate(- worldToScreenX(this.position.x),- worldToScreenY(this.position.y) );
         
-        ctx.fillStyle = `rgb(255,50,50)`;
+        /*ctx.fillStyle = `rgb(255,50,50)`;
         ctx.fillRect(worldToScreenX(this.position.x) - 3, worldToScreenY(this.position.y) - 3, 6, 6);
     
         for(let i = 0; i<4; i++){
             ctx.fillRect(worldToScreenX(this.vertex[i].x) - 3, worldToScreenY(this.vertex[i].y) - 3, 6, 6);
-        }
+        }*/
     }
 }
 
