@@ -34,22 +34,22 @@ class Drone{
 
         if(leftDown){
             this.angleVelocity -= 0.6;
-            velocityIncrement = Vec2.mult(Vec2.angleToVector(this.angle), 0.08);
-            //this.velocity = Vec2.add(this.velocity, Vec2.mult(Vec2.angleToVector(this.angle), 0.08));
+            //velocityIncrement = Vec2.mult(Vec2.angleToVector(this.angle), 0.08);
+            this.velocity = Vec2.add(this.velocity, Vec2.mult(Vec2.angleToVector(this.angle), 0.08));
 
             spawnParticle(this.position, this.velocity, this.angle, 0);
         }
         if(rightDown){
             this.angleVelocity += 0.6;
-            velocityIncrement = Vec2.mult(Vec2.angleToVector(this.angle), 0.08);
-            //this.velocity = Vec2.add(this.velocity, Vec2.mult(Vec2.angleToVector(this.angle), 0.08));
+            //velocityIncrement = Vec2.mult(Vec2.angleToVector(this.angle), 0.08);
+            this.velocity = Vec2.add(this.velocity, Vec2.mult(Vec2.angleToVector(this.angle), 0.08));
 
             spawnParticle(this.position, this.velocity, this.angle, 1);
 
         }
         if(leftDown && rightDown){
-            //this.velocity = Vec2.add(this.velocity, Vec2.mult(Vec2.angleToVector(this.angle), 0.16));
-            velocityIncrement = Vec2.mult(Vec2.angleToVector(this.angle), 0.08)
+            this.velocity = Vec2.add(this.velocity, Vec2.mult(Vec2.angleToVector(this.angle), 0.16));
+            //velocityIncrement = Vec2.mult(Vec2.angleToVector(this.angle), 0.08)
         }
         
         this.angleVelocity *= 0.9;
