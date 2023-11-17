@@ -15,7 +15,7 @@ class Drone{
         this.timeSinceCollision = 0;
     }
 
-    update(){
+    update(dt){
         
         let currentTile = new Vec2(Math.floor(this.position.x / world.tileSize),Math.floor(this.position.y / world.tileSize));
 
@@ -60,6 +60,7 @@ class Drone{
 
         this.velocity = Vec2.add(this.velocity, new Vec2(0, 0.1));
         this.velocity = Vec2.mult(this.velocity, 0.999);
+        this.velocity = Vec2.mult(this.velocity, dt);
         this.position = Vec2.add(this.position, this.velocity);
 
         let hasCollided = false;
