@@ -30,27 +30,33 @@ class Drone{
         
         // console.log(currentVertex[0])
 
+        let velocityIncrement = 0;
 
         if(leftDown){
             this.angleVelocity -= 0.6;
-            this.velocity = Vec2.add(this.velocity, Vec2.mult(Vec2.angleToVector(this.angle), 0.08));
+            velocityIncrement = Vec2.mult(Vec2.angleToVector(this.angle), 0.08);
+            //this.velocity = Vec2.add(this.velocity, Vec2.mult(Vec2.angleToVector(this.angle), 0.08));
 
             spawnParticle(this.position, this.velocity, this.angle, 0);
         }
         if(rightDown){
             this.angleVelocity += 0.6;
-            this.velocity = Vec2.add(this.velocity, Vec2.mult(Vec2.angleToVector(this.angle), 0.08));
+            velocityIncrement = Vec2.mult(Vec2.angleToVector(this.angle), 0.08);
+            //this.velocity = Vec2.add(this.velocity, Vec2.mult(Vec2.angleToVector(this.angle), 0.08));
 
             spawnParticle(this.position, this.velocity, this.angle, 1);
 
         }
         if(leftDown && rightDown){
-            this.velocity = Vec2.add(this.velocity, Vec2.mult(Vec2.angleToVector(this.angle), 0.16));
+            //this.velocity = Vec2.add(this.velocity, Vec2.mult(Vec2.angleToVector(this.angle), 0.16));
+            velocityIncrement = Vec2.mult(Vec2.angleToVector(this.angle), 0.08)
         }
         
         this.angleVelocity *= 0.9;
         this.angle += this.angleVelocity;
         
+        this.velocity = Vec2.add(this.velocity, velocityIncrement);
+
         if(this.angle >= 180){
             this.angle -= 360;
         }
@@ -58,8 +64,8 @@ class Drone{
             this.angle += 360;
         }
 
-        this.velocity = Vec2.add(this.velocity, new Vec2(0, 0.1));
-        this.velocity = Vec2.mult(this.velocity, 0.999);
+        this.velocity = Vec2.add(this.velocity, new Vec2(0, 0.1*dt));
+        this.velocity = Vec2.mult(this.velocity, 0.999*dt);
         this.velocity = Vec2.mult(this.velocity, dt);
         this.position = Vec2.add(this.position, this.velocity);
 
