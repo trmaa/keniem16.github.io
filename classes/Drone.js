@@ -118,15 +118,10 @@ class Drone{
                             for(let s = 0; s<8; s++){
 
                                 if(movingOptions[s] < smallerValue && world.worldMatrix[(newVertexTiles[k].x + directionsX[s]) * world.matrixHeight + (newVertexTiles[k].y + directionsY[s])] != undefined && world.worldMatrix[(newVertexTiles[k].x + directionsX[s]) * world.matrixHeight + (newVertexTiles[k].y + directionsY[s])].type != 0){
-                                // if(movingOptions[s] < smallerValue){
                                     
                                     smallerValue = movingOptions[s];
                                     smaller = s;
                                 }
-                            }
-
-                            if(smaller > 3){
-                                console.log("diagonal")
                             }
 
                             let movement = new Vec2(smallerValue * directionsX[smaller], smallerValue * directionsY[smaller]);
@@ -141,79 +136,6 @@ class Drone{
                         }
                     }
                 }
-                            
-
-                // if(world.worldMatrix[j * world.matrixHeight + i] != undefined && world.worldMatrix[j * world.matrixHeight + i].type == 0){
-                    
-                //     let objectPosition = world.worldMatrix[j * world.matrixHeight + i].worldPosition;
-                //     let objectSize = world.tileSize;
-                //     vertex:
-                //     for(let k = 0; k<4; k++){
-                //         if(
-                //             this.vertex[k].x > objectPosition.x && 
-                //             this.vertex[k].x < objectPosition.x + objectSize &&
-                //             this.vertex[k].y > objectPosition.y && 
-                //             this.vertex[k].y < objectPosition.y + objectSize
-                //         ){
-                //             // world.worldMatrix[j * world.matrixHeight + i].renderSelected();
-                //             // // this.velocity.y = 0;
-                //             hasCollided = true;
-                //             this.colliding = true;
-                            
-                //             let options = [
-                //                 Math.abs(objectPosition.y - this.vertex[k].y),
-                //                 Math.abs((objectPosition.y + objectSize) - this.vertex[k].y),
-                //                 Math.abs(objectPosition.x - this.vertex[k].x),
-                //                 Math.abs((objectPosition.x + objectSize) - this.vertex[k].x)
-                //             ]
-
-                //             let smaller = 100000;
-                //             let smallerValue = 100000;
-
-                //             for(let s = 0; s<4; s++){
-                //                 if(options[s] < smallerValue){
-                //                     smallerValue = options[s];
-                //                     smaller = s;
-                //                 }
-                //             }
-
-                //             let movement = new Vec2(0,0);
-                //             let velocity = new Vec2(0,0);
-
-                //             if(smaller == 0){
-                //                 movement.y = objectPosition.y - this.vertex[k].y;
-                //                 velocity.x = this.velocity.x * 0.9; 
-                //                 velocity.y = this.velocity.y * -0.6;
-                //             }
-                //             else if(smaller == 1){
-                //                 movement.y = (objectPosition.y + objectSize) - this.vertex[k].y;
-                //                 velocity.x = this.velocity.x * 0.9;
-                //                 velocity.y = this.velocity.y * -0.6;
-                //             }
-                //             else if(smaller == 2){
-                //                 movement.x = objectPosition.x - this.vertex[k].x;
-                //                 velocity.x = this.velocity.x * -0.6; 
-                //                 velocity.y = this.velocity.y * 0.9; 
-                //             }
-                //             else if(smaller == 3){
-                //                 movement.x = (objectPosition.x + objectSize) - this.vertex[k].x;
-                //                 velocity.x = this.velocity.x * -0.6; 
-                //                 velocity.y = this.velocity.y * 0.9; 
-                //             }
-
-                //             this.velocity = velocity;
-                //             this.position = Vec2.add(this.position, movement);
-                //             this.angle *= 0.99;
-                //             break cells;
-
-                //         }
-                //         else if(!hasCollided){
-                //             this.colliding = false;
-                //         }
-
-                //     }
-    
-                // }
             
             }
         }

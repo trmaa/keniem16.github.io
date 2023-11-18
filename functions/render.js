@@ -2,6 +2,9 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext('2d');
 
 function render(dt){
+
+    ctx.resetTransform();
+
     ctx.fillStyle = `rgb(255,210,210)`;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
