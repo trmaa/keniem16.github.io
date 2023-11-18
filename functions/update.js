@@ -6,6 +6,6 @@ function update(dt){
 
     
     for(let i = 0; i<particles.length; i++){
-        particles[i].update();
+        particles[i].update(dt);
     }
 }

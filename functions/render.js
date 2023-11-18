@@ -28,11 +28,11 @@ function render(dt){
 
     // world.worldMatrix[Math.floor(drone.position.x / world.tileSize) * world.matrixHeight + Math.floor(drone.position.y / world.tileSize)].renderSelected();
 
-    for (let i = Math.floor((drone.position.y - world.tileSize) / world.tileSize); i < Math.floor((drone.position.y + world.tileSize * 2) / world.tileSize); i++) {
+    /*for (let i = Math.floor((drone.position.y - world.tileSize) / world.tileSize); i < Math.floor((drone.position.y + world.tileSize * 2) / world.tileSize); i++) {
         for (let j = Math.floor((drone.position.x - world.tileSize) / world.tileSize); j < Math.floor((drone.position.x + world.tileSize * 2) / world.tileSize); j++) {
             world.worldMatrix[j * world.matrixHeight + i].renderSelected();
         }
-    }
+    }*/
 
     for(let i = 0; i<particles.length; i++){
         particles[i].render();

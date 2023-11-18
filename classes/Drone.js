@@ -15,7 +15,7 @@ class Drone{
         this.timeSinceCollision = 0;
     }
 
-    update(){
+    update(dt){
         
         let currentTile = new Vec2(Math.floor(this.position.x / world.tileSize),Math.floor(this.position.y / world.tileSize));
 
@@ -30,15 +30,18 @@ class Drone{
         
         // console.log(currentVertex[0])
 
+        let velocityIncrement = 0;
 
         if(leftDown){
             this.angleVelocity -= 0.6;
+            //velocityIncrement = Vec2.mult(Vec2.angleToVector(this.angle), 0.08);
             this.velocity = Vec2.add(this.velocity, Vec2.mult(Vec2.angleToVector(this.angle), 0.08));
 
             spawnParticle(this.position, this.velocity, this.angle, 0);
         }
         if(rightDown){
             this.angleVelocity += 0.6;
+            //velocityIncrement = Vec2.mult(Vec2.angleToVector(this.angle), 0.08);
             this.velocity = Vec2.add(this.velocity, Vec2.mult(Vec2.angleToVector(this.angle), 0.08));
 
             spawnParticle(this.position, this.velocity, this.angle, 1);
@@ -46,11 +49,14 @@ class Drone{
         }
         if(leftDown && rightDown){
             this.velocity = Vec2.add(this.velocity, Vec2.mult(Vec2.angleToVector(this.angle), 0.16));
+            //velocityIncrement = Vec2.mult(Vec2.angleToVector(this.angle), 0.08)
         }
         
         this.angleVelocity *= 0.9;
         this.angle += this.angleVelocity;
         
+        this.velocity = Vec2.add(this.velocity, velocityIncrement);
+
         if(this.angle >= 180){
             this.angle -= 360;
         }
@@ -58,8 +64,9 @@ class Drone{
             this.angle += 360;
         }
 
-        this.velocity = Vec2.add(this.velocity, new Vec2(0, 0.1));
-        this.velocity = Vec2.mult(this.velocity, 0.999);
+        this.velocity = Vec2.add(this.velocity, new Vec2(0, 0.1*dt));
+        this.velocity = Vec2.mult(this.velocity, 0.999*dt);
+        this.velocity = Vec2.mult(this.velocity, dt);
         this.position = Vec2.add(this.position, this.velocity);
 
         let hasCollided = false;
@@ -187,12 +194,12 @@ class Drone{
         ctx.rotate(this.angle * Math.PI / 180);
         ctx.translate(- worldToScreenX(this.position.x),- worldToScreenY(this.position.y) );
         
-        ctx.fillStyle = `rgb(255,50,50)`;
+        /*ctx.fillStyle = `rgb(255,50,50)`;
         ctx.fillRect(worldToScreenX(this.position.x) - 3, worldToScreenY(this.position.y) - 3, 6, 6);
     
         for(let i = 0; i<4; i++){
             ctx.fillRect(worldToScreenX(this.vertex[i].x) - 3, worldToScreenY(this.vertex[i].y) - 3, 6, 6);
-        }
+        }*/
     }
 }
 
