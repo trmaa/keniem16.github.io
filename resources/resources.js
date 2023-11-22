@@ -13,3 +13,6 @@ const srcBackground_04 = document.getElementById("srcBackground_04");
 
 const srcInstructions_01 = document.getElementById("srcInstructions_01");
 const srcInstructions_02 = document.getElementById("srcInstructions_02");
+
+const srcReturn = document.getElementById("srcReturn");
+const srcReturnHover = document.getElementById("srcReturnHover");

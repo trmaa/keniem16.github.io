@@ -1,74 +1,58 @@
 let particles = [];
 
-function spawnParticle(position, velocity, angle, variation){
-    if(variation == 0){
-        for(let i = 0; i<particles.length; i++){
-            if(particles[i].alpha < 0){
-                particles[i].beNew(new Vec2(
-                    position.x - Math.cos(angle * Math.PI / 180) * 50 + Math.sin(angle * Math.PI / 180) * 40 + Math.random() * 10 - 5,
-                    position.y + Math.cos(angle * Math.PI / 180) * 40 + Math.sin(angle * Math.PI / 180) * 50 + Math.random() * 10 - 5
-                ), velocity)
-                return;
-            }
+function spawnParticle(position, velocity, width, height, color, growValue = 0.01, mass = 1, collision){
+    for(let i = 0; i<particles.length; i++){
+        if(particles[i].color.alpha < 0){
+            particles[i].beNew(position, velocity, width, height, color, growValue, mass, collision);
+            return;
         }
-        particles.push(new Particle(new Vec2(
-            position.x - Math.cos(angle * Math.PI / 180) * 50 + Math.sin(angle * Math.PI / 180) * 40 + Math.random() * 10 - 5,
-            position.y + Math.cos(angle * Math.PI / 180) * 40 + Math.sin(angle * Math.PI / 180) * 50 + Math.random() * 10 - 5
-        ), velocity));
     }
-    else{
-        for(let i = 0; i<particles.length; i++){
-            if(particles[i].alpha < 0){
-                particles[i].beNew(new Vec2(
-                    position.x + Math.cos(angle * Math.PI / 180) * 50 + Math.sin(angle * Math.PI / 180) * 40 + Math.random() * 10 - 5,
-                    position.y + Math.cos(angle * Math.PI / 180) * 40 - Math.sin(angle * Math.PI / 180) * 50 + Math.random() * 10 - 5
-                ), velocity);
-                return;
-            }
-
-        }
-        particles.push(new Particle(new Vec2(
-            position.x + Math.cos(angle * Math.PI / 180) * 50 + Math.sin(angle * Math.PI / 180) * 40 + Math.random() * 10 - 5,
-            position.y + Math.cos(angle * Math.PI / 180) * 40 - Math.sin(angle * Math.PI / 180) * 50 + Math.random() * 10 - 5
-        ), velocity));
-    }
+    particles.push(new Particle(position, velocity, width, height, color, growValue, mass, collision));
 
 }
 
-
 class Particle{
-    constructor(position, velocity){
+    constructor(position, velocity, width, height, color, growValue, mass, collision){
         this.position = position;
-        this.size = Math.random() * 15 + 5;
+        this.width = width;
+        this.height = height;
         this.angle = Math.random() * 360;
-        this.alpha = Math.random();
+        this.color = color;
+        this.growValue = growValue;
+        this.mass = mass;
+        this.collision = collision;
 
         this.velocity = Vec2.add(velocity, Vec2.mult(velocity, -0.1));
     }
 
-    beNew(position, velocity){
+    beNew(position, velocity, width, height, color, growValue, mass, collision){
         this.position = position;
-        this.size = Math.random() * 30 + 5;
+        this.width = width;
+        this.height = height;
         this.angle = Math.random() * 360;
-        this.alpha = Math.random();
+        this.color = color;
+        this.growValue = growValue;
+        this.mass = mass;
+        this.collision = collision;
 
         this.velocity = Vec2.add(velocity, Vec2.mult(velocity, -0.1));
     }
 
     update(){
-        this.velocity.y += 0.1;
+        this.velocity.y += (0.1 * this.mass);
         this.position = Vec2.add(this.position, this.velocity);
-        this.size *= 1.02;
-        this.alpha -= 0.01;
+        this.width += this.width * this.growValue;
+        this.height += this.height * this.growValue;
+        this.color.alpha -= 0.01;
 
         let positionTile = new Vec2(Math.floor(this.position.x / world.tileSize),Math.floor(this.position.y / world.tileSize))
 
         for (let i = Math.floor((this.position.y - world.tileSize) / world.tileSize); i < Math.floor((this.position.y + world.tileSize * 2) / world.tileSize); i++) {
             for (let j = Math.floor((this.position.x - world.tileSize) / world.tileSize); j < Math.floor((this.position.x + world.tileSize * 2) / world.tileSize); j++) {
                 
-                let tilePosition = world.worldMatrix[j * world.matrixHeight + i].worldPosition;
 
-                if(world.worldMatrix[j * world.matrixHeight + i] != undefined && world.worldMatrix[j * world.matrixHeight + i].type == 0){
+                if(this.collision && world.worldMatrix[j * world.matrixHeight + i] != undefined && world.worldMatrix[j * world.matrixHeight + i].type == 0){
+                    let tilePosition = world.worldMatrix[j * world.matrixHeight + i].worldPosition;
 
                     if(
                         this.position.x > tilePosition.x && 
@@ -121,16 +105,18 @@ class Particle{
     }
 
     render(){
+        ctx.save();
         ctx.translate( worldToScreenX(this.position.x), worldToScreenY(this.position.y) );
         ctx.rotate(-this.angle * Math.PI / 180);
         ctx.translate(- worldToScreenX(this.position.x),- worldToScreenY(this.position.y) );
 
-        ctx.fillStyle = `rgba(180, 180, 180, ${this.alpha})`
-        ctx.fillRect(worldToScreenX(this.position.x - this.size/2), worldToScreenY(this.position.y - this.size/2), this.size, this.size)
-
-        ctx.translate( worldToScreenX(this.position.x), worldToScreenY(this.position.y) );
-        ctx.rotate(this.angle * Math.PI / 180);
-        ctx.translate(- worldToScreenX(this.position.x),- worldToScreenY(this.position.y) );
+        ctx.fillStyle = this.color.colorText();
+        ctx.fillRect(worldToScreenX(this.position.x - this.width/2), worldToScreenY(this.position.y - this.height/2), this.width, this.height)
+        
+        ctx.restore(); //restore canvas state
+        // ctx.translate( worldToScreenX(this.position.x), worldToScreenY(this.position.y) );
+        // ctx.rotate(this.angle * Math.PI / 180);
+        // ctx.translate(- worldToScreenX(this.position.x),- worldToScreenY(this.position.y) );
 
     }
 }

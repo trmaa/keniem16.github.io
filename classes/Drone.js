@@ -1,6 +1,7 @@
 class Drone{
     constructor(){
-        this.position = new Vec2(1150,1945);
+        this.position = mapPositions[level -1];
+        // this.position = new Vec2(1150,1945);
         this.velocity = new Vec2(0,0);
         this.angle = 0;
         this.angleVelocity = 0;
@@ -15,8 +16,9 @@ class Drone{
         this.timeSinceCollision = 0;
     }
 
-    update(dt){
-        
+    update(){
+        this.colliding = false;
+
         let currentTile = new Vec2(Math.floor(this.position.x / world.tileSize),Math.floor(this.position.y / world.tileSize));
 
         let currentVertexTiles = [
@@ -30,31 +32,43 @@ class Drone{
         
         // console.log(currentVertex[0])
 
-        let velocityIncrement = 0;
-
+        let velocityIncrement = new Vec2(0,0);
+        
         if(leftDown){
             this.angleVelocity -= 0.6;
-            //velocityIncrement = Vec2.mult(Vec2.angleToVector(this.angle), 0.08);
-            this.velocity = Vec2.add(this.velocity, Vec2.mult(Vec2.angleToVector(this.angle), 0.08));
+            velocityIncrement = Vec2.mult(Vec2.angleToVector(this.angle), 0.16);
 
-            spawnParticle(this.position, this.velocity, this.angle, 0);
+            let randomSize = Math.random() * 20 + 5;
+            spawnParticle(
+                new Vec2(
+                    this.position.x - Math.cos(this.angle * Math.PI / 180) * 50 + Math.sin(this.angle * Math.PI / 180) * 40 + Math.random() * 10 - 5,
+                    this.position.y + Math.cos(this.angle * Math.PI / 180) * 40 + Math.sin(this.angle * Math.PI / 180) * 50 + Math.random() * 10 - 5
+                ), 
+                this.velocity, randomSize, randomSize, new Color(180, 180, 180, Math.random()), 0.01, 1, true
+            );
         }
         if(rightDown){
             this.angleVelocity += 0.6;
-            //velocityIncrement = Vec2.mult(Vec2.angleToVector(this.angle), 0.08);
-            this.velocity = Vec2.add(this.velocity, Vec2.mult(Vec2.angleToVector(this.angle), 0.08));
+            velocityIncrement = Vec2.mult(Vec2.angleToVector(this.angle), 0.16);
 
-            spawnParticle(this.position, this.velocity, this.angle, 1);
+            let randomSize = Math.random() * 20 + 5;
+            spawnParticle(
+                new Vec2(
+                    this.position.x + Math.cos(this.angle * Math.PI / 180) * 50 + Math.sin(this.angle * Math.PI / 180) * 40 + Math.random() * 10 - 5,
+                    this.position.y + Math.cos(this.angle * Math.PI / 180) * 40 - Math.sin(this.angle * Math.PI / 180) * 50 + Math.random() * 10 - 5
+                ), 
+                this.velocity, randomSize, randomSize, new Color(180, 180, 180, Math.random()), 0.01, 1, true
+            );
 
         }
         if(leftDown && rightDown){
-            this.velocity = Vec2.add(this.velocity, Vec2.mult(Vec2.angleToVector(this.angle), 0.16));
-            //velocityIncrement = Vec2.mult(Vec2.angleToVector(this.angle), 0.08)
+            // this.velocity = Vec2.add(this.velocity, Vec2.mult(Vec2.angleToVector(this.angle), 0.16));
+            velocityIncrement = Vec2.mult(Vec2.angleToVector(this.angle), 0.32)
         }
         
         this.angleVelocity *= 0.9;
         this.angle += this.angleVelocity;
-        
+
         this.velocity = Vec2.add(this.velocity, velocityIncrement);
 
         if(this.angle >= 180){
@@ -64,9 +78,9 @@ class Drone{
             this.angle += 360;
         }
 
-        this.velocity = Vec2.add(this.velocity, new Vec2(0, 0.1*dt));
-        this.velocity = Vec2.mult(this.velocity, 0.999*dt);
-        this.velocity = Vec2.mult(this.velocity, dt);
+        this.velocity = Vec2.add(this.velocity, new Vec2(0, 0.12));
+        this.velocity = Vec2.mult(this.velocity, 0.999);
+
         this.position = Vec2.add(this.position, this.velocity);
 
         let hasCollided = false;
@@ -102,6 +116,18 @@ class Drone{
                         ){
                             hasCollided = true;
                             this.colliding = true;
+
+
+                            if(this.velocity.calcM() > 4){
+                                for(let l = 0; l<30; l++){
+                                    let randomSize = Math.random()*5;
+                                    let randomDirection = Math.random()*2*Math.PI;
+                                    let randomVelocity = Math.random()*3;
+
+                                    spawnParticle(this.vertex[k], new Vec2(Math.cos(randomDirection) * randomVelocity, Math.sin(randomDirection) * randomVelocity) , randomSize, randomSize * 4, new Color(170, 25, 25, Math.random()), 0, 0, false);
+                                }
+                            }
+
 
                             let directionsX = [0, 0, -1, 1,  1, -1, 1, -1];
                             let directionsY = [-1, 1, 0, 0,  1, -1, -1, 1];
@@ -173,6 +199,8 @@ class Drone{
     }
 
     render(){
+        ctx.save();
+
         ctx.translate( worldToScreenX(this.position.x), worldToScreenY(this.position.y) );
         ctx.rotate(-this.angle * Math.PI / 180);
         ctx.translate(- worldToScreenX(this.position.x),- worldToScreenY(this.position.y) );
@@ -189,10 +217,10 @@ class Drone{
             ctx.drawImage(srcFire[Math.floor(Math.random() * 2)], worldToScreenX(this.position.x + 60 - 19), worldToScreenY(this.position.y + 15 - 2), 18, 32);
         }
 
-
-        ctx.translate( worldToScreenX(this.position.x), worldToScreenY(this.position.y) );
-        ctx.rotate(this.angle * Math.PI / 180);
-        ctx.translate(- worldToScreenX(this.position.x),- worldToScreenY(this.position.y) );
+        ctx.restore(); //restore canvas state
+        // ctx.translate( worldToScreenX(this.position.x), worldToScreenY(this.position.y) );
+        // ctx.rotate(this.angle * Math.PI / 180);
+        // ctx.translate(- worldToScreenX(this.position.x),- worldToScreenY(this.position.y) );
         
         /*ctx.fillStyle = `rgb(255,50,50)`;
         ctx.fillRect(worldToScreenX(this.position.x) - 3, worldToScreenY(this.position.y) - 3, 6, 6);
