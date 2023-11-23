@@ -23,7 +23,7 @@ async function tick(){
     // }   
     // updateMenu();
 
-    if(!levelLoaded && map.lenght == 0){
+    if(!levelLoaded && map.length == 0){
 
 
         await loadMap();
