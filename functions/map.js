@@ -24,7 +24,7 @@ const level = urlParams.get("lvl");
 let mapObjects = allMapObjects[level - 1];
 
 async function loadMap() {
-
+    console.log("loadingMap")
     let response = await fetch(`../maps/${level}.txt`);
     let data = await response.text();
 

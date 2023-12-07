@@ -119,7 +119,7 @@ class Drone{
 
 
                             if(this.velocity.calcM() > 4){
-                                for(let l = 0; l<30; l++){
+                                for(let l = 0; l<this.velocity.calcM(); l++){
                                     let randomSize = Math.random()*5;
                                     let randomDirection = Math.random()*2*Math.PI;
                                     let randomVelocity = Math.random()*3;
