@@ -24,7 +24,7 @@ async function tick(){
     // updateMenu();
 
     if(!levelLoaded){
-
+        levelLoaded = true;
 
         await loadMap();
         
@@ -34,7 +34,6 @@ async function tick(){
         drone = new Drone();
         world = new World(1000, 1000, 140);
 
-        levelLoaded = true;
         
     }
 
